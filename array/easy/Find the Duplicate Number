@@ -1,0 +1,17 @@
+ int findDuplicate(vector<int>& nums) {
+        int slow=nums[0];
+        int fast=nums[nums[0]];
+        while (slow != fast)
+		{
+			slow = nums[slow];
+			fast = nums[nums[fast]];
+		}
+        //now after they meet take fast back to start and move to find the junction
+        slow = 0;
+		while (fast != slow)
+		{
+			fast = nums[fast];
+			slow = nums[slow];
+		}
+		return slow;     
+    }
