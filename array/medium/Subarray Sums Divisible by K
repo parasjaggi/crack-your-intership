@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int subarraysDivByK(vector<int>& nums, int k) {
+        int n=nums.size();
+        unordered_map<int,int>m;
+        //ham intially a zero dalta ha as starting remainder is 0
+        m[0]++;
+        int prefixsum=0,ans=0;
+        for(int i=0;i<n;i++){
+            prefixsum+=nums[i];
+            int rem=prefixsum%k;
+            if(rem<0){
+                rem=k+rem;
+            }
+            if(m[rem]>0){
+                ans+=m[rem];
+            }
+            m[rem]++;
+        }
+        return ans;
+    }
+};
