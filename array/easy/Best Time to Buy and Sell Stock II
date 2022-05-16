@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int f(vector<int>&prices,int i,int canbuy,int n,vector<vector<int>>&dp){
+           if(i==n){
+               return 0;
+           }
+        int profit=0;
+        if(dp[i][canbuy]!=-1)return dp[i][canbuy];
+        if(canbuy){
+            int buy=-prices[i]+f(prices,i+1,0,n,dp);
+            int nott=0+f(prices,i+1,1,n,dp);
+            profit= max(buy,nott);
+        }
+        else{
+            int sell=prices[i]+f(prices,i+1,1,n,dp);
+            int notsell=0+f(prices,i+1,0,n,dp);
+            profit= max(sell,notsell);
+        }
+        return dp[i][canbuy]=profit;
+    }
+    int maxProfit(vector<int>& prices) {
+        int n=prices.size();
+        vector<vector<int>>dp(n,vector<int>(2,-1));
+        return f(prices,0,1,n,dp);
+    }
+};
