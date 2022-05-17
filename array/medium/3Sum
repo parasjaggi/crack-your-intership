@@ -1,0 +1,33 @@
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& num) {
+        vector<vector<int>>ans;
+        int n=num.size();
+        sort(num.begin(),num.end());
+        for(int i=0;i<n-2;i++){
+          if (i == 0 || (i > 0 && num[i] != num[i-1])) {//taki same i na ajai asham old i ka liya all combination bana chuka ha and this will only create duplicates
+                
+                int lo = i+1, hi =n -1, sum = 0 - num[i];
+                
+                while (lo < hi) {
+                    if (num[lo] + num[hi] == sum) {
+                        
+                        vector<int> temp; 
+                        temp.push_back(num[i]); 
+                        temp.push_back(num[lo]); 
+                        temp.push_back(num[hi]); 
+                        ans.push_back(temp);
+                        
+                        while (lo < hi && num[lo] == num[lo+1]) lo++;//taki hum same low vapis na lele as it will create duplicate
+                        while (lo < hi && num[hi] == num[hi-1]) hi--;
+                        
+                        lo++; hi--;//both move as ak ko move karna ka mtlb nhi as ak move kiya toh toh jo same rahaa voh old value ka sath hi sum karega so duplicate
+                    } 
+                    else if (num[lo] + num[hi] < sum) lo++;
+                    else hi--;
+               }
+            }
+        }
+        return ans;
+    }
+};
