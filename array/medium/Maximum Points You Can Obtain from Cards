@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int maxScore(vector<int>& card, int k) {
+        int n=card.size();
+        vector<int>prefixsumfromstart;
+        prefixsumfromstart.push_back(0);//starting ka prefix is 0
+        vector<int>prefixsumfromback;
+        prefixsumfromback.push_back(0);
+        int x=0;
+        
+        for(int i=0;i<n;i++){
+            x+=card[i];
+            prefixsumfromstart.push_back(x);
+        }
+        x=0;
+        for(int i=n-1;i>=0;i--){
+            x+=card[i];
+            prefixsumfromback.push_back(x);
+        }
+                // Reversing is optional. I reversed it so that it would be easy
+        // to access sum of last (k-i) elements by just indexing  [n-k+i] 
+        reverse(prefixsumfromback.begin(),prefixsumfromback.end());
+        int ans=0;
+        for(int i=0;i<=k;i++){
+             int x=prefixsumfromstart[i]+prefixsumfromback[n-k+i];
+             ans=max(ans,x);
+        }
+        return ans;
+    }
+};
+
+
+
