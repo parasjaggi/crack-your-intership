@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int subarraySum(vector<int>& nums, int k) {
+        int n=nums.size();
+       unordered_map<int,int>m;
+        m[0]++;
+        int x=0;
+        int ans=0;
+        for(int i=0;i<n;i++){
+           x+=nums[i];
+            if(m[x-k]>0){
+                ans+=m[x-k];
+                m[x]++;
+            }
+            else{
+                m[x]++;
+            }
+        }
+        return ans;
+        
+    }
+};
