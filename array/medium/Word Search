@@ -1,0 +1,33 @@
+class Solution {
+public:
+    bool f(vector<vector<char>>& board, string word,int i,int j,int count){
+        if(count==word.size())return true;
+        int n=board.size();
+        int m=board[0].size();
+        if(i<0 || i>=n ||j<0 ||j>=m || word[count]!=board[i][j]){
+            return false;
+        }
+        char temp=board[i][j];//store karlo vspis kam aayaiga
+        board[i][j]='$';//taki yah vapis na lele kabi aaga call ma
+        bool check=f(board,word,i+1,j,count+1)||
+                   f(board,word,i-1,j,count+1)||
+                   f(board,word,i,j+1,count+1)||
+                   f(board,word,i,j-1,count+1);
+        //ab call hogai ha so vapis theek karde ossa 
+        board[i][j]=temp;
+        return check;
+    }
+    bool exist(vector<vector<char>>& board, string word) {
+        int n=board.size();
+        int m=board[0].size();
+        int count=0;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(board[i][j]==word[count]&& f(board,word,i,j,0)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+};
