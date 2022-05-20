@@ -1,0 +1,21 @@
+class Solution {
+public:
+    bool check(vector<int>&nums,vector<bool>&dp,int ind){
+        int n=nums.size();
+        if(ind>=n-1)return true;
+        if(dp[ind])return false;//visit ha then also aga ans nhi mila
+        
+        for(int i=1;i<=nums[ind];i++){
+            if(ind+i>=n-1)return true;
+            if(check(nums,dp,ind+i))return true;
+        }
+        dp[ind]=true;//visit kardiya
+        return false;
+    }
+    
+    bool canJump(vector<int>& nums) {
+        int n=nums.size();//make the tree
+        vector<bool>dp(n,false);//to keep check ki ham is index pa ga and haama ans mila yah nhi
+        return check(nums,dp,0);
+    }
+};
