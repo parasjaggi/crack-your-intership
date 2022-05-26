@@ -1,0 +1,37 @@
+class Solution {
+public:
+    //if by chance we are given arr and it conains duplicate then to avoud duplicate
+    //sort before calling print
+    //then Since the elements are sorted, all occurrences of an element
+    // must be together
+    //     while (arr[i] == arr[i+1])
+    //              i++; 
+    
+    
+    void print(vector<int>&arr,vector<vector<int>>&ans,int n,int k,int index,vector<int>&temp,int i){
+     //index ---> Current index in temp,temp ---> Temporary array to store current combination,i ---> index of current element in arr
+        if(index==k){
+            ans.push_back(temp);
+            return;
+        }
+        if(i>=n)return;
+        //include present element
+        temp.push_back(arr[i]);
+        print(arr,ans,n,k,index+1,temp,i+1);
+        temp.pop_back();
+        print(arr,ans,n,k,index,temp,i+1);
+                
+    }
+    
+    
+    vector<vector<int>> combine(int n, int k) {
+       vector<int>arr(n);
+        for(int i=0;i<n;i++){
+            arr[i]=i+1;
+        }
+        vector<vector<int>>ans;
+        vector<int>temp;
+        print(arr,ans,n,k,0,temp,0);
+        return ans;
+    }
+};
