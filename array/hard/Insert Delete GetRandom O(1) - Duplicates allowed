@@ -1,0 +1,56 @@
+class RandomizedCollection {
+public:
+    //do watch this two
+    //https://leetcode.com/problems/insert-delete-getrandom-o1-duplicates-allowed/discuss/1708946/C%2B%2B-solution-using-Vector-and-Unordered-map!
+    //https://www.youtube.com/watch?v=j4KwhBziOpg
+    RandomizedCollection() {
+        
+    }
+    vector<pair<int,int>>v;//this stores val and index of val in map
+    unordered_map<int,vector<int>>m;//this stores val and vecrtor stores all indexx of this val
+    
+    
+    bool insert(int val) {
+        auto it=m.find(val);
+        if(it!=m.end()){
+             v.push_back({val,m[val].size()});//val and index m[key] ka size hoga as abhi dala nhi ha 
+             m[val].push_back(v.size()-1);// vector ma adddress dala oss val ka in v (-1) isliya as ham opar v ma daldiya ha
+            return false;
+        }
+        else{
+            v.push_back({val,m[val].size()});
+            m[val].push_back(v.size()-1);
+            return true;
+        }
+    }
+    
+    
+    bool remove(int val) {
+      auto check=m.find(val);
+        if(check!=m.end()){
+            auto last=v.back();//last of v ko val wala ki jaga daldega and last ko pop kardega
+            m[last.first][last.second]=m[val].back();//jo last tha oska jo lastindex tha osma val ka lastindex daldiya
+            v[m[val].back()]=last;//last ko val ki jaga bhejdiya in v and now we can popback
+            m[val].pop_back();
+            if(m[val].empty()){
+                m.erase(val);
+            }
+            v.pop_back();
+            return true;
+        }
+        else return false;
+    }
+    
+    
+    int getRandom() {//inbuilt function
+        return v[rand()%v.size()].first;
+    }
+};
+
+/**
+ * Your RandomizedCollection object will be instantiated and called as such:
+ * RandomizedCollection* obj = new RandomizedCollection();
+ * bool param_1 = obj->insert(val);
+ * bool param_2 = obj->remove(val);
+ * int param_3 = obj->getRandom();
+ */
