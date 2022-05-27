@@ -1,0 +1,70 @@
+class Solution {
+public:
+    vector<int> nsr(vector<int>& a){
+        vector<int>v;
+        int n=a.size();
+        stack<pair<int,int>>s;
+        for(int i=a.size()-1;i>=0;i--){
+            if(s.size()==0){
+                v.push_back(n);//bcoz index n pa 0 size ki building hogai so its min
+            }
+            else if(s.size()!=0 && s.top().first<a[i]){
+                v.push_back(s.top().second);
+            }
+            else if(s.size()!=0 && s.top().first>=a[i]){
+                while(s.size()!=0 && s.top().first>=a[i]){
+                    s.pop();
+                }
+                if(s.size()==0){
+                    v.push_back(n);
+                }
+                else{
+                    v.push_back(s.top().second);
+                }
+            }
+            s.push({a[i],i});
+        }
+        reverse(v.begin(),v.end());
+        return v;
+    }
+    vector<int> nsl(vector<int>& a){
+      vector<int>v;
+      stack<pair<int,int>>s;
+      for(int i=0;i<a.size();i++){
+          if(s.size()==0){
+              v.push_back(-1);//bcoz index -1 pa 0 size ki building hogai so its min
+          }
+          else if(s.size()>0 && s.top().first<a[i]){
+              v.push_back(s.top().second);
+          }
+          else if(s.size()>0 && s.top().first>=a[i]){
+              while(s.size()>0 && s.top().first>=a[i]){
+                  s.pop();
+              }
+              if(s.size()==0){
+                  v.push_back(-1);
+              }
+              else{
+                  v.push_back(s.top().second);
+              }
+          }
+          s.push({a[i],i});
+      }
+
+      return v;
+    }
+    
+    
+    
+    int largestRectangleArea(vector<int>& heights) {
+       vector<int>left,right;
+        left=nsl(heights);
+        right=nsr(heights);
+        int maxi=0;
+        for(int i=0;i<heights.size();i++){
+            int x=heights[i]*(right[i]-left[i]-1);
+            maxi=max(maxi,x);
+        }
+        return maxi;
+    }
+};
