@@ -1,0 +1,50 @@
+string smallestWindow (string s, string p)
+    {   if(p.size()>s.size())return "-1";
+        int i=0,j=0;
+        unordered_map<char,int>m;
+        for(int i=0;i<p.size();i++){
+            m[p[i]]++;
+        }
+        int count=m.size();
+        int ans=1e9;//size of ans,min window
+        int start=0;//starting index of ans
+        while(j<s.size()){
+            if(m.find(s[j])!=m.end()){
+                m[s[j]]--;
+               if(m[s[j]]==0){
+                count--;
+               }
+            }
+            
+            
+            //now found one window
+            if(count==0){
+                while(count==0){
+                    //window small karta ha
+                    //if new window is smaller than old
+                    if(ans>(j-i+1)){
+                        ans=j-i+1;//new smaller length
+                        start=i;
+                    }
+                    //now lets slide i and make window small
+                    if(m.find(s[i])!=m.end()){
+                        m[s[i]]++;
+                        if(m[s[i]]>0){
+                            count++;
+                        }
+                        i++;
+                    }
+                    else{
+                        i++;//just remove this as it doesn't contribute
+                    }
+                }
+            }
+            j++;
+        }
+        if(ans!=1e9){
+            return s.substr(start,ans);
+        }
+        else{
+            return "-1";
+        }
+    }
