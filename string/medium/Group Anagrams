@@ -1,0 +1,35 @@
+class Solution {
+public:
+    //https://leetcode.com/problems/group-anagrams/discuss/328466/C%2B%2B-One-pass-24ms-99.99-faster-and-15.5-MB-99.73-less-memory
+    //why we thought of prime
+    vector<int>primes={ 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101 };
+    
+    long long hashvalue(string s){
+        int m=s.size();
+        long long sh=1;
+        int p=1000000007;
+        for(int i=0;i<m;i++){
+          int prime = primes[s[i] - 'a'];
+		  sh =(long long)(sh*prime)%p;
+        }
+        return sh;
+    }
+    vector<vector<string>> groupAnagrams(vector<string>& str) {
+        unordered_map<int,vector<string>>m;
+        vector<vector<string>>ans;
+        int n=str.size();
+        if(str.size()==0){
+            ans.push_back(str);
+        }
+        else{
+        for(int i=0;i<n;i++){
+            int x=hashvalue(str[i]);
+            m[x].push_back(str[i]);
+          }
+         for (auto x :m){
+           ans.push_back(x.second);
+         }
+        }
+        return ans;
+    }
+};
