@@ -1,0 +1,27 @@
+int f(int i,vector<int>nums, int k,int n,int filled,vector<vector<int>>&dp){
+        if(i==n){
+            return 0;
+        }
+        if(dp[i][filled]!=-1){
+            return dp[i][filled];
+        }
+        if(filled!=0){
+            int take=1e9;
+            if(filled+1+nums[i]<=k){
+                take=f(i+1,nums,k,n,filled+1+nums[i],dp);
+            }
+            int gap=k-filled;
+            int nottake=(gap*gap)+f(i,nums,k,n,0,dp);
+            return dp[i][filled]= min(take,nottake);
+        }
+        else{
+            //khali ha so we have to take
+            return dp[i][filled]=f(i+1,nums,k,n,nums[i],dp);
+        }
+    }
+    int solveWordWrap(vector<int>nums, int k) 
+    { 
+        int n=nums.size();
+        vector<vector<int>>dp(n+1,vector<int>(k+1,-1));
+        return f(0,nums,k,n,0,dp);
+    } 
