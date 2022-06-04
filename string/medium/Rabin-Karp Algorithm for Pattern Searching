@@ -1,0 +1,52 @@
+string text,pattern;
+     cin>>text>>pattern;
+
+     int n,m;
+     n=sz(text);
+     m=sz(pattern); 
+
+     int d=256;// d is the number of characters in the input alphabet
+     int p=1e9;//we mod with this to avoid overflow
+
+     int i,j;
+     int p=0;//hash value of pattern
+     int t=0;//hash value of text
+     int h=1;
+     //h=pow(d,m-1)%p  mtlb first char of pattern will multiply with this
+     //instead of pow we calculate manually
+     for( i=0;i<m-1;i++){
+         h=(h*d)%p;//p each time mod ki kabi out of bound na hojai
+     }
+
+     //now lets calculate the hash value for pattern and first window of text
+     for(i=0;i<m;i++){
+         p=(d*p+pattern[i])%p;
+         t=(d*t+text[i])%p;
+     }
+
+     //slide the pattern over text by one by one
+     for ( i = 0; i < n-m; i++)
+     {
+        // Check the hash values of current window of text and pattern. If the hash values match then only
+        // check for characters one by on
+        if(p==t){
+            for(j=0;j<m;j++){
+                if(text[i+j]!=pattern[j]){
+                    break;
+                }
+            }
+            if(j==m){//mtlb break nhi hua and so j==m ho hi jaiga last ma
+                cout<<"Pattern found at index "<< i<<endl;
+            }
+        }
+        // Calculate hash value for next window of text: Remove leading digit, add trailing digit
+        if(i<n-m){
+            t=(((t-text[i]*h)*d)+text[i+m])%p;
+            //if by chance t become -ve by chance
+            if(t<0){
+                t+=p;//property of mod 
+            }
+        }
+     }
+     
+
