@@ -1,0 +1,43 @@
+class Solution {
+public:
+    //https://leetcode.com/problems/basic-calculator-ii/discuss/1646099/C%2B%2BPython-Simple-Solutions-w-Explanation-or-Postfix-%2B-Stack-%2B-Without-Stack
+    int pre (char x) 
+    {
+       if (x == '+' || x == '-')
+        return 1;
+       else if (x == '*' || x == '/') return 2;
+       else return 0;
+    }
+    
+    int calculate(string s) {
+        stack<char>op;
+        stack<int>num;
+        int cur=0;
+        s += '#'; // ensures all processing happens in loop...else we need to write an condition outside to take care of last number 
+        for(auto c:s){
+            if(c==' ')continue;
+            else if(c!='+' && c!='-' && c!='*' && c!='/' && c!='#'){
+                cur=cur*10+(c-'0');//make digit
+            }
+            else{
+                num.push(cur);// push the number formed till now 
+                while(!op.empty() && pre(c)<=pre(op.top())){// evaluate operators in stack having precedence >= current operator
+                    int num1=num.top();
+                    num.pop();
+                    int num2=num.top();
+                    num.pop();
+                    char curOp=op.top();
+                    op.pop();
+                    
+                    if(curOp == '*')        num.push(num2 * num1);
+                    else if(curOp == '/')   num.push(num2 / num1);
+                    else if(curOp == '+')   num.push(num2 + num1);
+                    else if(curOp == '-')   num.push(num2 - num1);
+                }
+                op.push(c); // push current operator to evaluate later
+                cur=0; // reset the number
+            }
+        }
+        return num.top();
+    }
+};
