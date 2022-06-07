@@ -1,0 +1,17 @@
+    int maxipath(TreeNode* root,int &maxi){
+         if(root==NULL){
+            return 0;
+        }
+        int leftsum=max(0,maxipath(root->left,maxi));//agar koi path hama -ve de raha ha  voh count nhi kar raha isliya max with 0
+        int rightsum=max(0,maxipath(root->right,maxi));
+        
+        maxi=max(maxi,leftsum+rightsum+root->val);
+        
+        return (root->val)+max(leftsum,rightsum);
+    }
+    
+    int maxPathSum(TreeNode* root) {
+       int maxi=-1e9; 
+        maxipath(root,maxi);
+        return maxi;
+    }
