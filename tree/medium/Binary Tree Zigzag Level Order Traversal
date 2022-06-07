@@ -1,0 +1,35 @@
+ vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
+        vector<vector<int>>ans;
+        if(root==NULL)return ans;
+        queue<TreeNode*>levelqueue;
+        levelqueue.push(root);
+        bool lefttoright=true;
+        
+        while(!levelqueue.empty()){
+            int siz=levelqueue.size();
+            vector<int>row(siz);//sara khali karna ha queue and isma store karna
+            for(int i=0;i<siz;i++){
+                TreeNode* node= levelqueue.front();
+                levelqueue.pop();
+                
+                //now see how to insert  left sa right yah olta
+                int index=0;
+                if(lefttoright){
+                    index=i;
+                }
+                else{
+                    index=siz-1-i;
+                }
+                row[index]=node->val;
+                if(node->left){
+                    levelqueue.push(node->left);
+                }
+                if(node->right){
+                    levelqueue.push(node->right);
+                }
+            }
+            ans.push_back(row);
+            lefttoright=!lefttoright;
+        }
+        return ans;
+    }
