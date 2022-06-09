@@ -1,0 +1,67 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    void makeparents(TreeNode* root,unordered_map<TreeNode*,TreeNode*>&parent){
+        queue<TreeNode*>q;
+        q.push(root);
+        while(!q.empty()){
+            TreeNode* cur=q.front();
+            q.pop();
+            if(cur->left){
+                parent[cur->left]=cur;
+                q.push(cur->left);
+            }
+            if(cur->right){
+                parent[cur->right]=cur;
+                q.push(cur->right);
+            }
+        }
+    }
+    
+        
+    vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
+        unordered_map<TreeNode*,TreeNode*>parent;///node->parent
+        makeparents(root,parent);
+        unordered_map<TreeNode*,bool>visted;
+        queue<TreeNode*>q;
+        visted[target]=true;
+        q.push(target);
+        int dis=0;
+        while(!q.empty()){/*Second BFS to go upto K level from target node and using our hashtable info*/
+            int size=q.size();
+            if(dis==k)break;
+            for(int i=0;i<size;i++){
+                TreeNode* node=q.front();
+                q.pop();
+                if(node->left && !visted[node->left]){
+                    q.push(node->left);
+                    visted[node->left]=true;
+                }
+                if(node->right && !visted[node->right]){
+                    q.push(node->right);
+                    visted[node->right]=true;
+                }
+                if(parent[node] && !visted[parent[node]]){
+                    q.push(parent[node]);
+                    visted[parent[node]]=true;
+                }
+            }
+            dis++;
+        }
+        vector<int>ans;
+        while(!q.empty()){
+            TreeNode* node=q.front();
+            q.pop();
+            ans.push_back(node->val);
+        }
+        return ans;
+    }
+};
