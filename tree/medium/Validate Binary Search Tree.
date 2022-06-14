@@ -1,0 +1,10 @@
+bool help(TreeNode* root,long maxi,long mini){
+        if(root==NULL){
+            return true;
+        }
+        if(root->val>=maxi || root->val<=mini)return false;
+        return (help(root->left,root->val,mini) & help(root->right,maxi,root->val));
+    }
+    bool isValidBST(TreeNode* root) {
+        return help(root,LONG_MAX,LONG_MIN);
+    }
