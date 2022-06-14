@@ -1,0 +1,18 @@
+TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if(root==NULL){
+            return NULL;
+        }
+        int cur=root->val;
+        //both right
+        if(cur<p->val  && cur<q->val){
+            //move right
+            return lowestCommonAncestor(root->right,p,q);
+        }
+        //if both left
+        if(cur > p->val  && cur > q->val){
+            //move left
+            return lowestCommonAncestor(root->left,p,q);
+        }
+        //if none of the both then ans
+        return root;
+    }
