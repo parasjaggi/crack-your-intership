@@ -1,0 +1,16 @@
+bool isSameTree(TreeNode* p, TreeNode* q) {
+        //lets do preorder
+        if(p==NULL || q==NULL){
+            return p==q;//it covers all three case if both null,one only null
+        }
+        return (p->val==q->val && isSameTree(p->left,q->left) && isSameTree(p->right,q->right));//root left right
+    }
+    
+    bool isSubtree(TreeNode* root, TreeNode* subRoot) {
+        if(subRoot==NULL)return true;
+        if(root==NULL){
+            return false;
+        }
+        if(isSameTree(root,subRoot))return true;
+        return (isSubtree(root->left,subRoot))||(isSubtree(root->right,subRoot));
+    }
