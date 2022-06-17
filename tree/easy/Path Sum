@@ -1,0 +1,17 @@
+bool help(TreeNode* root, int target,int sum,bool check){
+        sum+=root->val;
+        if(sum==target && root->left==NULL && root->right==NULL)return true;
+        if(root->left){
+            check|=help(root->left,target,sum,check);
+        }
+         if(root->right){
+            check|=help(root->right,target,sum,check);
+        }
+        return check;
+    }
+    bool hasPathSum(TreeNode* root, int targetSum) {
+        if(root==NULL){
+            return false;
+        }
+        return help(root,targetSum,0,false);
+    }
