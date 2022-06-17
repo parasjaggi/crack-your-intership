@@ -1,0 +1,29 @@
+vector<int> inorderTraversal(TreeNode* root) {
+        vector<int>inorder;
+        TreeNode* cur=root;
+        while(cur!=NULL){
+             //first case no left
+            if(cur->left==NULL){
+                inorder.push_back(cur->val);
+                cur=cur->right;
+            }
+            else{//second case
+                //visit the rightmost in the left subtree
+                TreeNode* prev=cur->left;//we don't move cur as we need it
+                while(prev->right && prev->right!=cur){//right exist karta and yah already thread nhi ha
+                    prev=prev->right;
+                }
+                if(prev->right==NULL){//thread nhi ha so make thread
+                    prev->right=cur;
+                    cur=cur->left;//now thread are formed lets move cur
+                }
+                else if(prev->right==cur){
+                    prev->right=NULL;//break thread
+                    inorder.push_back(cur->val);//take that root val
+                    cur=cur->right;//and move right
+                }
+            }
+            
+        }
+        return inorder;
+    }
