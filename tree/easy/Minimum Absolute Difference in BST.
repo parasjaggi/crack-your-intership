@@ -1,0 +1,20 @@
+//as wze need predecossor of every node to find min diff as min diff will be btwv pre and cur
+    //so do inorder ans store pre
+    void help(TreeNode* root,int &ans,TreeNode* &pre){
+        if(root->left){
+            help(root->left,ans,pre);
+        }
+        if(pre){
+            ans=min(ans,abs(pre->val - root->val));
+        }
+        pre=root;
+        if(root->right){
+            help(root->right,ans,pre);
+        }
+    }
+    int getMinimumDifference(TreeNode* root) {
+        int ans=1e9;
+        TreeNode* pre=NULL;
+        help(root,ans,pre);
+        return ans;
+    }
