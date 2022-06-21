@@ -1,0 +1,56 @@
+class Solution{
+    public:
+    /* Should return minimum distance between a and b
+    in a tree with given root*/
+    Node* lowestCommonAncestor(Node* root, int p, int q) {
+        if(root==NULL || root->data==p || root->data==q){
+            return root;
+        }
+        Node* left=lowestCommonAncestor(root->left,p,q);
+        Node* right=lowestCommonAncestor(root->right,p,q);
+        //result
+        if(left==NULL){
+            return right;
+        }
+        else if(right==NULL){
+            return left;
+        }
+        else{//if both are not null
+           return root;
+        }
+        
+    }
+    int findDepth(Node* root, int x)
+   {
+    // Base case
+    if (root == NULL)
+        return -1;
+  
+    // Initialize distance as -1
+    int dist = -1;
+  
+    // Check if x is current node=
+    if ((root->data == x)
+  
+        // Otherwise, check if x is
+        // present in the left subtree
+        || (dist = findDepth(root->left, x)) >= 0
+  
+        // Otherwise, check if x is
+        // present in the right subtree
+        || (dist = findDepth(root->right, x)) >= 0)
+  
+        // Return depth of the node
+        return dist + 1;
+  
+    return dist;
+}
+    int findDist(Node* root, int a, int b) {
+        Node* lca=lowestCommonAncestor(root,a,b);
+        int ra=findDepth(root,a);
+        int rb=findDepth(root,b);
+        int rlca=findDepth(root,lca->data);
+        int ans=ra+rb-2*(rlca);
+        return ans;
+    }
+};
