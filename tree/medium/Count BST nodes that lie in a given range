@@ -1,0 +1,23 @@
+void help(Node *root, int l, int h,int &ans){
+        if(root==NULL)return;
+        if(root->data>=l && root->data<=h){
+            ans++;
+            help(root->left,l,h,ans);
+            help(root->right,l,h,ans); 
+        }    
+        else if(root->data<l){
+           help(root->right,l,h,ans); 
+        }
+        else{
+            help(root->left,l,h,ans);
+        }
+        
+        
+        
+    }
+    int getCount(Node *root, int l, int h)
+    {
+      int ans=0;
+      help(root,l,h,ans);
+      return ans;
+    }
