@@ -1,0 +1,18 @@
+Node* help(int start,int end,int pre[]){
+        if(start>end)return NULL;
+        Node* root=newNode(pre[start]);
+        int mid=start+1;//ending point of left subtree
+        while(mid<=end && pre[mid]<pre[start]){
+            mid++;
+        }
+        mid--;//as mid just brfore right subtree chaya
+        root->left=help(start+1,mid,pre);
+        root->right=help(mid+1,end,pre);
+        return root;
+        
+    }
+    Node* post_order(int pre[], int n)
+    {
+        return help(0,n-1,pre);
+        
+    }
