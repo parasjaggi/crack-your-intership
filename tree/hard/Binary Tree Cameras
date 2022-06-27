@@ -1,0 +1,50 @@
+class Solution {
+public:
+    map<pair<TreeNode*, pair<bool, bool>>, int> dp;
+    int solve(TreeNode* root,bool camera,bool parentcamera){
+        if(root==NULL){
+            if(camera){//aga node tha nhi and u still gave it camera so yah nhi lena path
+                return 1e9;
+            }
+            else{
+                 return 0;
+            }
+        }
+        if(root->right==NULL && root->left==NULL){//leaf
+            if(camera){
+                return 1;
+            }
+            else{
+                if(parentcamera){
+                    return 0;
+                }
+                else{
+                    return 1e9;//as leaf ha so na hi iska parent pa camera na hi isspa
+                }
+            }
+        }
+        if(dp.find({root, {camera, parentcamera}})!=dp.end())return dp[{root, {camera, parentcamera}}];
+        
+        if(camera){
+            return dp[{root, {camera, parentcamera}}]=1+min(solve(root->left,0,1),solve(root->left,1,1))+min(solve(root->right,0,1),solve(root->right,1,1));//1 as ispa ha,ham child pa call kar raha ha
+        }
+        
+        else{
+            
+         if(parentcamera){
+             return dp[{root, {camera, parentcamera}}]=min(solve(root->left,0,0),solve(root->left,1,0))+min(solve(root->right,0,0),solve(root->right,1,0));
+          }
+            
+          else{
+              //na parent na kudh pa then one of sutree pa hona hi chaya
+              int subtree1=solve(root->left,1,0)+min(solve(root->right,0,0),solve(root->right,1,0));//left ko dediya camra
+              int subtree2=solve(root->right,1,0)+min(solve(root->left,0,0),solve(root->left,1,0));
+              return dp[{root, {camera, parentcamera}}]=min(subtree1,subtree2);
+          }
+        }
+
+    }
+    int minCameraCover(TreeNode* root) {
+       return min(solve(root,0,0),solve(root,1,0));
+    }
+};
