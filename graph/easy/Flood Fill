@@ -1,0 +1,48 @@
+class Solution {
+public:
+    void dfs(int i,int j,int col,vector<vector<int>>& image,vector<vector<int>>& vis,int x,int n,int m){
+        vis[i][j]=1;
+        image[i][j]=col;
+        //up
+        if(i>=1 && !vis[i-1][j]){
+            if(image[i-1][j]==x){
+                dfs(i-1,j,col,image,vis,x,n,m);
+            }
+        }
+        //down
+        if(i<n-1 && !vis[i+1][j]){
+             if(image[i+1][j]==x){
+                dfs(i+1,j,col,image,vis,x,n,m);
+            }
+        }
+        //left
+        if(j>=1 && !vis[i][j-1]){
+             if(image[i][j-1]==x){
+                dfs(i,j-1,col,image,vis,x,n,m);
+            }
+        }
+        //right
+        if(j<m-1 && !vis[i][j+1]){
+            if(image[i][j+1]==x){
+                dfs(i,j+1,col,image,vis,x,n,m);
+            }
+        }
+        
+    }
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int color) {
+        int n=image.size();
+        int m=image[0].size();
+        vector<vector<int>>vis(n,vector<int>(m,0));
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(!vis[i][j]){
+                    if(i==sr && j==sc){
+                        int x=image[i][j];
+                        dfs(i,j,color,image,vis,x,n,m);
+                    }
+                }
+            }
+        }
+        return image;
+    }
+};
