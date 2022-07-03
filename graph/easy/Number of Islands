@@ -1,0 +1,48 @@
+class Solution {
+public:
+    void dfs(int i,int j,vector<vector<int>>&vis,vector<vector<char>>& grid,int n,int m){
+        vis[i][j]=1;
+        //up
+        if(i>=1 && !vis[i-1][j]){
+            if(grid[i-1][j]=='1'){
+                dfs(i-1,j,vis,grid,n,m);
+            }
+        }
+        //down
+        if(i<n-1 && !vis[i+1][j]){
+            if(grid[i+1][j]=='1'){
+                dfs(i+1,j,vis,grid,n,m);
+            }
+        }
+        //left
+        if(j>=1 && !vis[i][j-1]){
+            if(grid[i][j-1]=='1'){
+                dfs(i,j-1,vis,grid,n,m);
+            }
+        }
+        //right
+        if(j<m-1 && !vis[i][j+1]){
+            if(grid[i][j+1]=='1'){
+                dfs(i,j+1,vis,grid,n,m);
+            }
+        }
+        
+    }
+    int numIslands(vector<vector<char>>& grid) {
+        int n=grid.size();
+        int m=grid[0].size();
+        vector<vector<int>>vis(n+1,vector<int>(m+1,0));
+        int count=0;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+              if(!vis[i][j]){
+                if(grid[i][j]=='1'){
+                    count++;
+                    dfs(i,j,vis,grid,n,m);//we will mark all this horizontal and vertical island visited so that al these count as one
+                }
+              }
+            }
+        }
+        return count;
+    }
+};
