@@ -1,0 +1,28 @@
+// Function to detect cycle in an undirected graph.
+    bool check(int root,int parent,vector<int>&vis,vector<int> adj[]){
+        vis[root]=1;
+        for(auto child:adj[root]){
+            if(!vis[child]){
+                if(check(child,root,vis,adj)){
+                    return true;
+                }
+            }
+            else{
+                if(child!=parent){
+                    return true;//hama ak node mila jo phala visted tha nd its not parent so its a cycle
+                }
+            }
+        }
+       return false; 
+    }
+    bool isCycle(int n, vector<int> adj[]) {
+        vector<int>vis(n+1,0);
+        for(int i=0;i<n;i++){
+            if(!vis[i]){
+                if(check(i,-1,vis,adj)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
