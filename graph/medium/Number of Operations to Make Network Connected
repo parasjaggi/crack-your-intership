@@ -1,0 +1,49 @@
+int findpar(int node,vector<int>&parent){
+        if(node==parent[node]){
+          return node;
+        }
+        return parent[node]=findpar(parent[node],parent);
+    }
+    void unionn(int u,int v,vector<int>&parent,vector<int>&rank){
+        u=findpar(u,parent);
+        v=findpar(v,parent);
+        if(rank[u]<rank[v]){
+            parent[u]=v;
+        }
+        else if(rank[v]<rank[u]){
+            parent[v]=u;
+        }
+        else{
+          parent[u]=v;
+            rank[v]++;
+        }
+    }
+    
+    int makeConnected(int n, vector<vector<int>>& connections) {
+        int siz=connections.size();
+        vector<int>parent(n);
+        vector<int>rank(n);
+        if(siz<n-1){
+            return -1;
+        }
+        else{
+           for(int i=0;i<n;i++){
+               parent[i]=i;
+               rank[i]=0;
+           }
+           for(int i=0;i<siz;i++){
+               int u=connections[i][0];
+               int v=connections[i][1];
+               if(findpar(u,parent)!=findpar(v,parent)){
+               unionn(u,v,parent,rank);
+               }    
+           }
+           int ans=0;
+           for(int i=0;i<n;i++){
+              if(findpar(i,parent)==i){//one componenet
+                  ans++;
+              }  
+           }
+           return ans-1;
+        }
+    }
