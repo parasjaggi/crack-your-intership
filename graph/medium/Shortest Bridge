@@ -1,0 +1,84 @@
+bool isvalid(int i,int j,int n){
+        //sees if in bound or not
+        if(i<0 || j<0 || i>=n || j>=n){
+            return false;
+        }
+        return true;
+    }
+    //first island ko mark as vis kardega
+    void dfs(int i,int j,int n,vector<vector<int>>& grid,vector<vector<int>>&vis,int dx[],int dy[]){
+        if(!isvalid(i,j,n) || grid[i][j]==0 || vis[i][j]){//yah out of bound,yah water,yah already visited
+            return;
+        }
+        vis[i][j]=1;
+        for(int k=0;k<4;k++){
+            int x=dx[k];
+            int y=dy[k];
+            dfs(i+x,j+y,n,grid,vis,dx,dy);
+        }
+    }
+    //ham first island sa bfs karka dekh raha ha ki second island kitna dur ha
+    void bfs(vector<vector<int>>& grid,vector<vector<int>>&vis,int dx[],int dy[],int n,int &ans){
+        
+        queue<pair<int,int>>q;//starting ma vis daldo isma
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                if(vis[i][j]==1){
+                    q.push({i,j});
+                }
+            }
+        }
+        bool flag=false;//second tak pucha yah nhi
+        while(!q.empty()){
+            int siz=q.size();
+            //we will go through first layer now
+            //as we will return how many layers we have gone through
+            for(int i=0;i<siz;i++){
+                auto it=q.front();
+                q.pop();
+                int x=it.first;
+                int y=it.second;
+                for(int j=0;j<4;j++){
+                    int x1=dx[j]+x;
+                    int y1=dy[j]+y;
+                    if(!isvalid(x1,y1,n) || vis[x1][y1]){
+                        continue;//as yah toh out of bound ha yah already vis ha
+                    }
+                    else{
+                        if(grid[x1][y1]==1){
+                            //we reached other island
+                            return;
+                        }
+                        else{//water ha so hama ispa bhi bfs laga ka isalnd dundna 
+                            q.push({x1,y1});
+                            vis[x1][y1]=1;
+                        }
+                    }
+                }
+            }
+            ans++;//no. of layer we need to traverse to reach other island
+        }
+    }
+    
+    int shortestBridge(vector<vector<int>>& grid) {
+        int n=grid.size();
+        int dx[]={0,0,1,-1};
+        int dy[]={1,-1,0,0};
+        vector<vector<int>>vis(n,vector<int>(n,0));
+        
+        bool flag=false;
+        int ans=0;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                if(grid[i][j]==1){//first 1 mila mtlb first island ka part
+                    dfs(i,j,n,grid,vis,dx,dy);//mark first island aas vis and aga jana ki jarut nhi 
+                    bfs(grid,vis,dx,dy,n,ans);//ab hamna first mark kardiya call bfs to find min lenght and return it 
+                    flag=true;
+                    break;
+                }
+            }
+            if(flag)break;
+        }
+        
+        return ans;
+    }
