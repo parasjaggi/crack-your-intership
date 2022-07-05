@@ -1,0 +1,52 @@
+class Solution
+{
+	public:
+	//Function to find number of strongly connected components in the graph.
+	void dfs(int node,stack<int>&s,vector<int>&vis,vector<int> adj[]){
+	    vis[node]=1;
+	    for(auto child:adj[node]){
+	        if(!vis[child]){
+	            dfs(child,s,vis,adj);
+	        }
+	    }
+	    s.push(node);
+	}
+	void revdfs(int node,vector<int>&vis,vector<int> transpose[]){
+	    vis[node]=1;
+	    for(auto child:transpose[node]){
+	        if(!vis[child]){
+	            revdfs(child,vis,transpose);
+	        }
+	    }
+	}
+    int kosaraju(int n, vector<int> adj[])
+    {
+        //lets do topological sort
+        stack<int>s;
+        vector<int>vis(n,0);
+        for(int i=0;i<n;i++){
+            if(!vis[i]){
+                dfs(i,s,vis,adj);
+            }
+        }
+        //olta connection
+        vector<int>transpose[n];
+        for(int i=0;i<n;i++){
+            vis[i]=0;
+            for(auto child:adj[i]){
+                transpose[child].push_back(i);
+            }
+        }
+        int count=0;
+        while(!s.empty()){
+            int node=s.top();
+            s.pop();
+            if(!vis[node]){
+                count++;
+                revdfs(node,vis,transpose);
+            }
+        }
+        return count;
+        
+    }
+};
