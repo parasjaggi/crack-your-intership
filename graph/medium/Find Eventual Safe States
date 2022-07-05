@@ -1,0 +1,27 @@
+ bool dfs(int node,vector<vector<int>>& graph,unordered_map<int,bool>&safe){
+         if(safe.find(node)!=safe.end()){
+             return safe[node];
+         }
+         //first we are gonna asume it to be not safe,as then we can detect cycle
+        safe[node]=false;
+        for(auto child:graph[node]){
+           if(!dfs(child,graph,safe)){//if even one child is not safe then this node is also not safe
+               return safe[node];//so we will return the value that we assumed
+           }
+        }
+        //if all child were safe so we didn't return so we can come here
+        //and now we know this is safe as all child are safe
+        safe[node]=true;
+        return safe[node];
+    }
+    vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
+        unordered_map<int,bool>safe;
+        int n=graph.size();
+        vector<int>ans;
+        for(int i=0;i<n;i++){
+            if(dfs(i,graph,safe)){
+                ans.push_back(i);
+            }
+        }
+        return ans;
+    }
