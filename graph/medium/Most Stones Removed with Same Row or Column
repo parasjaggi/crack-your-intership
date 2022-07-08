@@ -1,0 +1,49 @@
+class Solution {
+public:
+    unordered_map<int, int> parent;//not vector as ham y ko -ve index karega and oss then index nhi le sakta par key can be -ve
+    unordered_map<int, int> rank;
+    
+    int findpar(int u){
+        if(parent[u]==u)return u;
+        else{
+            return parent[u]=findpar(parent[u]);
+        }
+    }
+    void unionn(int x,int y){
+        x=findpar(x);
+        y=findpar(y);
+        if(rank[x]<rank[y]){
+            parent[x]=y;
+        }
+        else if(rank[y]<rank[x]){
+            parent[y]=x;
+        }
+        else{
+            parent[x]=y;
+            rank[y]++;
+        }
+    }
+    int removeStones(vector<vector<int>>& stones) {
+        for(auto it:stones){
+            int x=-(it[0]+1);
+            int y=(it[1]+1);
+            parent[x]=x;
+            parent[y]=y;
+        }
+        int count=stones.size();
+        int component=0;
+        for(auto it:stones){
+            int x=-(it[0]+1);
+            int y=(it[1]+1);
+            unionn(x,y);//-ve y as jab parent of x=1,y=9 ha and ak x=9 y=2 ha then it says since 9 ha same component but nhi so we make y -ve to avoid this
+        }
+        for(auto i:parent){
+            if(i.first==i.second){
+                component++;
+            }
+        }
+        int ans=count-component;
+        return ans;
+        
+    }
+};
