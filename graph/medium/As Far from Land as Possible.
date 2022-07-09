@@ -1,0 +1,44 @@
+class Solution {
+public:
+    queue<pair<int,int>>q;
+    int level=0;// actually this going to be max distance, I initialise with the name "level" for better understanding because here i do bfs
+    
+    void bfs(int i, int j, int n, vector<vector<int>>& grid, vector<vector<int>>& visit){
+        if( i<0 || j<0 || i>=n || j>=n || visit[i][j]==1)
+            return;
+            
+        q.push(make_pair(i,j));
+        visit[i][j] = 1;
+    }
+    
+    int maxDistance(vector<vector<int>>& grid) {
+        int n=grid.size();
+        vector<vector<int>>visit(n,vector<int>(n,0));
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                if(grid[i][j]==1){// push the coordinates of all 1s into queue
+                    q.push({i,j});
+                    visit[i][j]=1;
+                }
+            }
+        }
+        
+        if(q.size() == n*n || q.size() == 0 ) // if either queue contains all 1s or all 0s then return -1
+            return -1;
+        
+        while(!q.empty()){
+            int siz=q.size();
+            for(int i=0;i<siz;i++){//pura ak level khali karna
+                int x=q.front().first;
+                int y=q.front().second;
+                q.pop();
+                bfs(x-1,y,n,grid,visit);//push next level in queue
+                bfs(x+1,y,n,grid,visit);
+                bfs(x,y-1,n,grid,visit);
+                bfs(x,y+1,n,grid,visit);
+            }
+            level++;
+        }
+        return level-1;// -1 is done to eliminate the count of that node which is at max distance, like oska aga ha nhi but we counted level++ for that also
+    }
+};
