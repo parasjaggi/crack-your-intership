@@ -1,0 +1,25 @@
+typedef pair<int,int> pi;
+class Solution {
+public:
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        vector<int>ans;
+        int n=nums.size();
+        priority_queue<pi,vector<pi>,greater<pi>>heap;
+        unordered_map<int,int> hash;
+        for(int num : nums){
+            hash[num]++;
+        }
+        for(auto it = hash.begin(); it != hash.end(); it++){
+           heap.push({it->second, it->first});
+            if(heap.size()>k){
+                heap.pop();
+            }
+        }
+        while(heap.size()>0){
+            int p=heap.top().second;
+            heap.pop();
+            ans.push_back(p);
+        }
+        return ans;
+    }
+};
