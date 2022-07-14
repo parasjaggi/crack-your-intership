@@ -1,0 +1,18 @@
+int nthUglyNumber(int n) {
+        int x=0;
+        long long ans=1;
+        priority_queue<long long,vector<long long>,greater<long long>>minheap;
+        minheap.push(1);
+        while(!minheap.empty() && x<n){
+            ans=minheap.top();
+            minheap.pop();
+            while(!minheap.empty() && ans==minheap.top()){//to remove duplicates
+                minheap.pop();
+            }
+             minheap.push(ans*2);
+             minheap.push(ans*3);
+             minheap.push(ans*5);
+            x++;
+        }
+        return ans;
+    }
